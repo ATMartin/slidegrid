@@ -86,6 +86,7 @@ func main() {
   router.POST("/api/tiles", CreateTile)
   router.DELETE("/api/tiles/:id", DestroyTile)
   router.GET("/api/tiles/:id/delete", DestroyTile)
+  router.Static("/public", "./public")
 
   router.GET("/api/displaydata", GetDisplayData)
 
