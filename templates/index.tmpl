@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SlideGrid Management</title>
+  </head>
+  <body>
+    <h1>SlideGrid Management</h1>
+
+    <h2>Existing Tiles</h2>
+    <div class="tile-container">
+      <ul>
+      {{ range .tiles }}
+        <li>- <strong>"{{ .Content }}"</strong><a href="api/tiles/{{ .ID }}/delete"><em>(delete)</em></a></li>
+      {{ end }}
+      </ul>
+    </div>
+
+    <h2>Create New Tile</h2>
+    <div class="new-tile-container">
+      <form method="POST" action="api/tiles">
+        <label for="content">Content: </label><input type="text" name="content">
+        <input type="submit" value="+">
+      </form>
+    </div>
+  </body>
+</html>
