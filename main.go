@@ -22,6 +22,12 @@ type Tile struct {
   Content string `form:"content" json:"content"`
 }
 
+type DisplayData struct {
+  TileCollection []Tile `json:"tileCollection"`
+  BaseColor string `json:"baseColor"`
+  DisplayTitle string `json:"displayTitle"`
+}
+
 // Tile CRUD
 
 func GetTiles(c *gin.Context) {
@@ -50,6 +56,20 @@ func DestroyTile(c *gin.Context) {
   c.Redirect(http.StatusFound, "/index")
 }
 
+func GetDisplayData(c *gin.Context) {
+  var displaydata DisplayData
+  var tiles []Tile
+  if err := db.Find(&tiles).Error; err != nil {
+    c.AbortWithStatus(404)
+    fmt.Println(err)
+  } else {
+    displaydata.TileCollection = tiles
+    displaydata.BaseColor = "#009999"
+    displaydata.DisplayTitle = ""
+    c.JSON(200, displaydata)
+  }
+}
+
 func main() {
   //db, err = gorm.Open("sqlite3", "./tiles.db");
   db, err = gorm.Open("postgres", os.Getenv("DATABASE_URL"))
@@ -66,6 +86,8 @@ func main() {
   router.POST("/api/tiles", CreateTile)
   router.DELETE("/api/tiles/:id", DestroyTile)
   router.GET("/api/tiles/:id/delete", DestroyTile)
+
+  router.GET("/api/displaydata", GetDisplayData)
 
   router.GET("/index", func(c *gin.Context) {
     var tiles []Tile
