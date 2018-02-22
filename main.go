@@ -3,10 +3,12 @@ package main
 import (
   "fmt"
   "net/http"
+  "os"
 
   "github.com/gin-gonic/gin"
   "github.com/jinzhu/gorm"
   _ "github.com/jinzhu/gorm/dialects/sqlite"
+  _ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var (
@@ -49,7 +51,8 @@ func DestroyTile(c *gin.Context) {
 }
 
 func main() {
-  db, err = gorm.Open("sqlite3", "./tiles.db");
+  //db, err = gorm.Open("sqlite3", "./tiles.db");
+  db, err = gorm.Open("postgres", os.Getenv("DATABASE_URL"))
   if (err != nil) { fmt.Println(err) }
   defer db.Close();
 
